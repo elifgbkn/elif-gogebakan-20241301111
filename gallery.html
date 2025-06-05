@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri | Elif Göğebakan</title>
+    <meta name="description" content="Elif Göğebakan'ın mimari, manzara ve doğa fotoğrafları.">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Ana CSS -->
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- AOS Animasyon Kütüphanesi -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body {
+            padding-top: 80px;
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #ff4757;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff4757;
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .gallery-section {
+            padding: 2rem 0;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay-content {
+            color: #ffffff;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay-content {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-overlay-content p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ff4757;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo:hover img {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                padding: 1.5rem;
+                flex-direction: column;
+                gap: 1.5rem;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">
+                    <img src="assets/images/profile.jpg" alt="Elif Göğebakan">
+                    Elif Göğebakan
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="about.html">Hakkımda</a></li>
+                    <li><a href="timeline.html">Zaman Çizelgesi</a></li>
+                    <li><a href="gallery.html">Galeri</a></li>
+                    <li><a href="contact.html">İletişim</a></li>
+                </ul>
+                <button class="hamburger" aria-label="Menü">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="gallery-section">
+            <div class="gallery-grid">
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+                    <img src="assets/images/gallery/1.jpg" alt="Galeri 1">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 1</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+                    <img src="assets/images/gallery/2.jpg" alt="Galeri 2">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 2</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="300">
+                    <img src="assets/images/gallery/3.jpg" alt="Galeri 3">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 3</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="400">
+                    <img src="assets/images/gallery/4.jpg" alt="Galeri 4">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 4</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="500">
+                    <img src="assets/images/gallery/5.jpg" alt="Galeri 5">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 5</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="600">
+                    <img src="assets/images/gallery/6.jpg" alt="Galeri 6">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 6</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="700">
+                    <img src="assets/images/gallery/7.jpg" alt="Galeri 7">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 7</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="800">
+                    <img src="assets/images/gallery/8.jpg" alt="Galeri 8">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 8</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="900">
+                    <img src="assets/images/gallery/9.jpg" alt="Galeri 9">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 9</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="1000">
+                    <img src="assets/images/gallery/10.jpg" alt="Galeri 10">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 10</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="1100">
+                    <img src="assets/images/gallery/11.jpg" alt="Galeri 11">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 11</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="1200">
+                    <img src="assets/images/gallery/12.jpg" alt="Galeri 12">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 12</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="1300">
+                    <img src="assets/images/gallery/13.jpg" alt="Galeri 13">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 13</h3>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="1400">
+                    <img src="assets/images/gallery/14.jpg" alt="Galeri 14">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 14</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="1500">
+                    <img src="assets/images/gallery/15.jpg" alt="Galeri 15">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 15</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="1600">
+                    <img src="assets/images/gallery/16.jpg" alt="Galeri 16">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 16</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="1700">
+                    <img src="assets/images/gallery/17.jpg" alt="Galeri 17">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 17</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="1800">
+                    <img src="assets/images/gallery/18.jpg" alt="Galeri 18">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 18</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="1900">
+                    <img src="assets/images/gallery/19.jpg" alt="Galeri 19">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 19</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="2000">
+                    <img src="assets/images/gallery/20.jpg" alt="Galeri 20">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 20</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="2100">
+                    <img src="assets/images/gallery/21.jpg" alt="Galeri 21">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 21</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="2200">
+                    <img src="assets/images/gallery/22.jpg" alt="Galeri 22">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 22</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="2300">
+                    <img src="assets/images/gallery/23.jpg" alt="Galeri 23">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 23</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="2400">
+                    <img src="assets/images/gallery/24.jpg" alt="Galeri 24">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 24</h3>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="2500">
+                    <img src="assets/images/gallery/25.jpg" alt="Galeri 25">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 25</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="2600">
+                    <img src="assets/images/gallery/26.jpg" alt="Galeri 26">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 26</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="2700">
+                    <img src="assets/images/gallery/27.jpg" alt="Galeri 27">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 27</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="2800">
+                    <img src="assets/images/gallery/28.jpg" alt="Galeri 28">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 28</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="2900">
+                    <img src="assets/images/gallery/29.jpg" alt="Galeri 29">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 29</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="3000">
+                    <img src="assets/images/gallery/30.jpg" alt="Galeri 30">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 30</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="3100">
+                    <img src="assets/images/gallery/31.jpg" alt="Galeri 31">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 31</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="3200">
+                    <img src="assets/images/gallery/32.jpg" alt="Galeri 32">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 32</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="3300">
+                    <img src="assets/images/gallery/33.jpg" alt="Galeri 33">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 33</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="3400">
+                    <img src="assets/images/gallery/34.jpg" alt="Galeri 34">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 34</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="3500">
+                    <img src="assets/images/gallery/35.jpg" alt="Galeri 35">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 35</h3>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="3600">
+                    <img src="assets/images/gallery/36.jpg" alt="Galeri 36">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 36</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="3700">
+                    <img src="assets/images/gallery/37.jpg" alt="Galeri 37">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 37</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="3800">
+                    <img src="assets/images/gallery/38.jpg" alt="Galeri 38">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 38</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="3900">
+                    <img src="assets/images/gallery/39.jpg" alt="Galeri 39">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 39</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="4000">
+                    <img src="assets/images/gallery/40.jpg" alt="Galeri 40">
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-content">
+                            <h3>Fotoğraf 40</h3>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://www.instagram.com/artedelif/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/elif-g%C3%B6%C4%9Febakan-b86a75222/" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p>Elif Göğebakan</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // AOS Animasyon başlatma
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+        
+        // Mobil menü
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 
